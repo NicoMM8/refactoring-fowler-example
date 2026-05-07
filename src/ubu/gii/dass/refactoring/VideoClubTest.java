@@ -56,4 +56,23 @@ public class VideoClubTest {
 
 	}
 
+	@Test
+	public void testAlquilerMasCasos() {
+		Rental r1 = new Rental(m0, 3); // > 2 dias
+		Rental r2 = new Rental(m2, 1); // <= 3 dias
+
+		c1.addRental(r1);
+		c1.addRental(r2);
+
+		String salida = c1.statement();
+
+		String salidaEsperada = "Rental Record for Manuel\n"
+				+ "\tAccion Mutante\t3.5\n"
+				+ "\tHermano Oso\t1.5\n"
+				+ "Amount owed is 5.0\n"
+				+ "You earned 2 frequent renter points";
+
+		assertEquals("Calcula mal el alquiler con mas casos", salidaEsperada, salida);
+	}
+
 }
