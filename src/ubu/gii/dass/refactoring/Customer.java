@@ -5,7 +5,7 @@ package ubu.gii.dass.refactoring;
 *
 * Ejemplo de aplicaci�n de refactorizaciones. Actualizado para colecciones gen�ricas de java 1.5
 *
-* @author M. Fowler y <A HREF="mailto:clopezno@ubu.es">Carlos L�pez</A>
+* @author M. Fowler y <A HREF="mailto:clopezno@ubu.es">Carlos L�pez, Alejandro Navas</A>
 * @version 1.1
 * @see java.io.File
 *
@@ -52,6 +52,33 @@ public class Customer {
 		result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
 		result += "You earned " + String.valueOf(frequentRenterPoints)
 				+ " frequent renter points";
+		return result;
+	}
+
+	public String htmlStatement() {
+		double totalAmount = 0;
+		int frequentRenterPoints = 0;
+		Iterator<Rental> rentals = _rentals.iterator();
+		String result = "<h1>Rental Record for <em>" + getName() + "</em></h1>\n";
+		result += "<table>\n";
+		while (rentals.hasNext()) {
+			double thisAmount = 0;
+			Rental each = rentals.next();
+			// determine amounts for each line
+			thisAmount = each.amountFor();
+			
+			// add frequent renter points
+			frequentRenterPoints += each.getFrequentRenterPoints();
+			// show figures for this rental
+			result += "<tr><td>" + each.getMovie().getTitle() + "</td><td>"
+					+ String.valueOf(thisAmount) + "</td></tr>\n";
+			totalAmount += thisAmount;
+		}
+		result += "</table>\n";
+		// add footer lines
+		result += "<p>Amount owed is <em>" + String.valueOf(totalAmount) + "</em></p>\n";
+		result += "<p>You earned <em>" + String.valueOf(frequentRenterPoints)
+				+ "</em> frequent renter points</p>";
 		return result;
 	}
 }
