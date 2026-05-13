@@ -74,5 +74,26 @@ public class VideoClubTest {
 
 		assertEquals("Calcula mal el alquiler con mas casos", salidaEsperada, salida);
 	}
+	
+	@Test
+	public void testHtmlStatement() {
+		Rental r1 = new Rental(m0, 3); // Accion Mutante (> 2 dias)
+		Rental r2 = new Rental(m2, 1); // Hermano Oso (<= 3 dias)
+
+		c1.addRental(r1);
+		c1.addRental(r2);
+
+		String salida = c1.htmlStatement();
+
+		String salidaEsperada = "<h1>Rental Record for <em>Manuel</em></h1>\n"
+				+ "<table>\n"
+				+ "<tr><td>Accion Mutante</td><td>3.5</td></tr>\n"
+				+ "<tr><td>Hermano Oso</td><td>1.5</td></tr>\n"
+				+ "</table>\n"
+				+ "<p>Amount owed is <em>5.0</em></p>\n"
+				+ "<p>You earned <em>2</em> frequent renter points</p>";
+
+		assertEquals("Calcula mal el informe HTML", salidaEsperada, salida);
+	}
 
 }

@@ -1,16 +1,8 @@
 package ubu.gii.dass.refactoring;
 
-/**
-* Tema  Refactorizaciones 
-*
-* Ejemplo de aplicaci�n de refactorizaciones. Actualizado para colecciones gen�ricas de java 1.5
-*
-* @author M. Fowler y <A HREF="mailto:clopezno@ubu.es">Carlos L�pez, Alejandro Navas</A>
-* @version 1.1
-* @see java.io.File
-*
-*/
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class Customer {
 	private String _name;
@@ -19,16 +11,10 @@ public class Customer {
 	public Customer(String name) {
 		_name = name;
 		_rentals = new ArrayList<Rental>();
-
-	};
-
-	public void addRental(Rental arg) {
-		_rentals.add(arg);
 	}
 
-	public String getName() {
-		return _name;
-	};
+	public void addRental(Rental arg) { _rentals.add(arg); }
+	public String getName() { return _name; }
 
 	public String statement() {
 		double totalAmount = 0;
@@ -36,22 +22,16 @@ public class Customer {
 		Iterator<Rental> rentals = _rentals.iterator();
 		String result = "Rental Record for " + getName() + "\n";
 		while (rentals.hasNext()) {
-			double thisAmount = 0;
 			Rental each = rentals.next();
-			// determine amounts for each line
-			thisAmount = each.amountFor();
 			
-			// add frequent renter points
+			double thisAmount = each.getCharge();
 			frequentRenterPoints += each.getFrequentRenterPoints();
-			// show figures for this rental
-			result += "\t" + each.getMovie().getTitle() + "\t"
-					+ String.valueOf(thisAmount) + "\n";
+			
+			result += "\t" + each.getMovie().getTitle() + "\t" + String.valueOf(thisAmount) + "\n";
 			totalAmount += thisAmount;
 		}
-		// add footer lines
 		result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
-		result += "You earned " + String.valueOf(frequentRenterPoints)
-				+ " frequent renter points";
+		result += "You earned " + String.valueOf(frequentRenterPoints) + " frequent renter points";
 		return result;
 	}
 
@@ -62,23 +42,17 @@ public class Customer {
 		String result = "<h1>Rental Record for <em>" + getName() + "</em></h1>\n";
 		result += "<table>\n";
 		while (rentals.hasNext()) {
-			double thisAmount = 0;
 			Rental each = rentals.next();
-			// determine amounts for each line
-			thisAmount = each.amountFor();
 			
-			// add frequent renter points
+			double thisAmount = each.getCharge();
 			frequentRenterPoints += each.getFrequentRenterPoints();
-			// show figures for this rental
-			result += "<tr><td>" + each.getMovie().getTitle() + "</td><td>"
-					+ String.valueOf(thisAmount) + "</td></tr>\n";
+			
+			result += "<tr><td>" + each.getMovie().getTitle() + "</td><td>" + String.valueOf(thisAmount) + "</td></tr>\n";
 			totalAmount += thisAmount;
 		}
 		result += "</table>\n";
-		// add footer lines
 		result += "<p>Amount owed is <em>" + String.valueOf(totalAmount) + "</em></p>\n";
-		result += "<p>You earned <em>" + String.valueOf(frequentRenterPoints)
-				+ "</em> frequent renter points</p>";
+		result += "<p>You earned <em>" + String.valueOf(frequentRenterPoints) + "</em> frequent renter points</p>";
 		return result;
 	}
 }
